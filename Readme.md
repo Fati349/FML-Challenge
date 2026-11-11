@@ -26,13 +26,7 @@ Un modèle ne compte que s'il apporte un éclairage interprétable ou une utilit
 
 > Les noms de colonnes ci-dessus sont des hypothèses : à vérifier lors de la première exploration et à corriger ici.
 
-### Schéma relationnel (simplifié)
 
-```
-cities ──< stations ──< station_status
-                │
-bike_types ──< bikes ──< trips  (départ / arrivée géolocalisés)
-```
 
 Les données brutes ne sont **pas versionnées** dans Git. Placez-les dans `data/raw/` (voir ci-dessous).
 
@@ -72,42 +66,4 @@ pip install -r requirements.txt
 ```
 
 Bibliothèques suggérées : `pandas`, `numpy`, `scikit-learn`, `matplotlib`, `seaborn`, `geopandas` / `folium` (cartographie), `jupyter`.
-
-## Démarche proposée
-
-### 1. Exploration et qualité des données
-- Volume, période couverte et nombre de villes, de stations et de vélos.
-- Valeurs manquantes, doublons, horodatages incohérents (arrivée avant départ, durées aberrantes).
-- Trajets aux coordonnées impossibles ou à distance nulle.
-
-### 2. Feature engineering
-- Durée et distance des trajets (haversine), vitesse moyenne.
-- Variables temporelles : heure, jour de la semaine, week-end ou jours fériés, saison.
-- Rattachement des points de départ et d'arrivée à la station la plus proche.
-- Taux de remplissage des stations (`vélos disponibles / capacité`).
-- Type de vélo (mécanique ou électrique) joint aux trajets.
-
-### 3. Pistes d'analyse
-- **Rythmes temporels** : pics domicile-travail vs usage de loisir, différences entre semaine et week-end.
-- **Comparaison entre villes et pays** : intensité d'usage, durée des trajets, part de vélos électriques.
-- **Typologie des stations** (clustering) : stations résidentielles « émettrices » le matin, stations de bureaux « réceptrices », stations touristiques.
-- **Flux origine-destination** : corridors principaux, asymétries de flux qui expliquent les besoins de rééquilibrage.
-- **Électrique vs mécanique** : les vélos électriques servent-ils à des trajets plus longs ou plus vallonnés ?
-- **Prédiction de disponibilité** : anticiper les stations vides ou pleines pour guider le rééquilibrage.
-- **Détection d'anomalies** : stations défaillantes, vélos inutilisés, trajets atypiques.
-
-### 4. Modélisation
-- Partir d'une baseline simple (moyenne historique, régression linéaire) avant les modèles plus complexes.
-- Utiliser une validation **temporelle** (pas de mélange aléatoire passé/futur) et, si pertinent, une validation entre villes.
-- Privilégier l'interprétabilité : importance des variables, SHAP, visualisation des clusters.
-
-### 5. Restitution
-Chaque résultat doit répondre à la question : **qu'apprend-on sur la mobilité, et que pourrait en faire un opérateur ?**
-
-## Conventions de travail
-
-- Une branche par analyse ou fonctionnalité, fusionnée dans `main` via pull request.
-- Notebooks numérotés (`01_exploration.ipynb`, `02_features.ipynb`, …), sorties vidées avant commit si elles sont volumineuses.
-- Le code réutilisé dans plusieurs notebooks passe dans `src/`.
-- Aucune donnée brute ni aucun fichier lourd dans Git (voir `.gitignore`).
 
